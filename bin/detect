@@ -9,5 +9,9 @@ if [ -f $1/META.info ]; then
   echo "Perl 6"
   exit 0
 fi
+if [ -f $1/app.pl6 ]; then
+  echo "Perl 6"
+  exit 0
+fi
 
 exit 1
