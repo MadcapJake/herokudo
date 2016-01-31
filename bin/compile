@@ -31,7 +31,7 @@ rakudobrew init
 echo "rakudobrew initialized" | indent
 
 echo "-----> Building moar..."
-rakudobrew build moar
+rakudobrew build moar --configure-opts="--prefix=$SITE_BIN"
 echo "moar built" | indent
 
 echo "-----> Building panda..."
