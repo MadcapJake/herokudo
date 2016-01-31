@@ -18,7 +18,7 @@ RAKUDOBREW_BIN=$BUILD_DIR/.rakudobrew/bin
 SITE_BIN=$BUILD_DIR/.rakudobrew/moar-nom/install/share/perl6/site/bin
 
 echo "-----> Cloning rakudobrew repo..."
-git clone https://github.com/tadzik/rakudobrew $BUILD_DIR/.rakudobrew 2>&1 /dev/null
+git clone https://github.com/tadzik/rakudobrew $BUILD_DIR/.rakudobrew -q
 echo "cloning completed" | indent
 
 export PATH=$RAKUDOBREW_BIN:$PATH
