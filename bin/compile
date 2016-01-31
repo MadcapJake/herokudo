@@ -24,21 +24,21 @@ echo "cloning completed" | indent
 export PATH=$RAKUDOBREW_BIN:$PATH
 
 echo "-----> Initializing rakudobrew..."
-rakudobrew init 2>&1 /dev/null
+rakudobrew init
 echo "rakudobrew initialized" | indent
 
 echo "-----> Building moar..."
-rakudobrew build moar 2>&1 /dev/null
+rakudobrew build moar
 echo "moar built" | indent
 
 echo "-----> Building panda..."
-rakudobrew build panda 2>&1 /dev/null
+rakudobrew build panda
 echo "panda built" | indent
 
 export PATH=$SITE_BIN:$PATH
 
 echo "-----> Installing Task::Star..."
-panda install Task::Star 2>&1 /dev/null
+panda install Task::Star
 echo "Task::Star modules installed" | indent
 
 mkdir -p $BUILD_DIR/.profile.d
