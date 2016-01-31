@@ -14,14 +14,17 @@ BUILD_DIR=${1:-}
 CACHE_DIR=${2:-}
 # ENV_DIR=${3:-}
 # BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
-RAKUDOBREW_BIN=$BUILD_DIR/.rakudobrew/bin
-SITE_BIN=$BUILD_DIR/.rakudobrew/moar-nom/install/share/perl6/site/bin
+RAKUDOBREW_BIN=/app/.heroku/rakudobrew/bin
+SITE_BIN=/app/.heroku/rakudobrew/moar-nom/install/share/perl6/site/bin
+
+mkdir -p $BUILD_DIR/.heroku/rakudobrew
+mkdir -p /app/.heroku
+ln -s $BUILD_DIR/.heroku/rakudobrew /app/.heroku/rakudobrew
+export PATH=$RAKUDOBREW_BIN:$PATH
 
 echo "-----> Cloning rakudobrew repo..."
-git clone https://github.com/tadzik/rakudobrew $BUILD_DIR/.rakudobrew -q
+git clone https://github.com/tadzik/rakudobrew $BUILD_DIR/.heroku/rakudobrew -q
 echo "cloning completed" | indent
-
-export PATH=$RAKUDOBREW_BIN:$PATH
 
 echo "-----> Initializing rakudobrew..."
 rakudobrew init
@@ -41,5 +44,7 @@ echo "-----> Installing Task::Star..."
 panda install Task::Star
 echo "Task::Star modules installed" | indent
 
+HOME_RBREW_BIN=$HOME/.heroku/rakudobrew/bin
+HOME_RSITE_BIN=$HOME/.heroku/rakudobrew/moar-nom/install/share/perl6/site/bin
 mkdir -p $BUILD_DIR/.profile.d
-echo "PATH=$RAKUDOBREW_BIN:$SITE_BIN:$PATH" > $BUILD_DIR/.profile.d/perl6.sh
+echo "PATH=$HOME_RBREW_BIN:$HOME_RSITE_BIN:$PATH" > $BUILD_DIR/.profile.d/perl6.sh
