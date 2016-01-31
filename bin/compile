@@ -24,10 +24,16 @@ echo "-----> Initializing rakudobrew..."
 rakudobrew init
 echo "rakudobrew initialized" | indent
 
-echo "-----> Building moar"
+echo "-----> Building moar..."
 rakudobrew build moar
 echo "moar built" | indent
 
-echo "-----> Building panda"
+echo "-----> Building panda..."
 rakudobrew build panda
 echo "panda built" | indent
+
+export PATH=$BUILD_DIR/.rakudobrew/moar-nom/install/share/perl6/site/bin:$PATH
+
+echo "-----> Installing Task::Star..."
+panda install Task::Star
+echo "Task::Star modules installed" | indent
