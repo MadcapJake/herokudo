@@ -14,10 +14,12 @@ BUILD_DIR=${1:-}
 # CACHE_DIR=${2:-}
 # ENV_DIR=${3:-}
 # BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
+RAKUDOBREW_BIN=$BUILD_DIR/.rakudobrew/bin
+SITE_BIN=$BUILD_DIR/.rakudobrew/moar-nom/install/share/perl6/site/bin
 
 echo "-----> Cloning rakudobrew repo..."
 git clone https://github.com/tadzik/rakudobrew $BUILD_DIR/.rakudobrew
-export PATH=$BUILD_DIR/.rakudobrew/bin:$PATH
+export PATH=$RAKUDOBREW_BIN:$PATH
 echo "cloning completed" | indent
 
 echo "-----> Initializing rakudobrew..."
@@ -32,8 +34,11 @@ echo "-----> Building panda..."
 rakudobrew build panda
 echo "panda built" | indent
 
-export PATH=$BUILD_DIR/.rakudobrew/moar-nom/install/share/perl6/site/bin:$PATH
+export PATH=$SITE_BIN:$PATH
 
 echo "-----> Installing Task::Star..."
 panda install Task::Star
 echo "Task::Star modules installed" | indent
+
+mkdir -p $BUILD_DIR/.profile.d
+echo "PATH=$RAKUDOBREW_BIN:$SITE_BIN:$PATH" > $BUILD_DIR/.profile.d/perl6.sh
