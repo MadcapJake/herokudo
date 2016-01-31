@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir> <env-dir>
+
+set -e
+set -o pipefail   # don't ignore exit codes when piping output
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+echo "-----> Found a META6.json"
+
+BUILD_DIR=${1:-}
+# CACHE_DIR=${2:-}
+# ENV_DIR=${3:-}
+# BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
+
+echo "-----> Cloning rakudobrew repo..."
+git clone https://github.com/tadzik/rakudobrew $BUILD_DIR/.rakudobrew
+export PATH=$BUILD_DIR/.rakudobrew/bin:$PATH
+echo "cloning completed" | indent
+
+echo "-----> Initializing rakudobrew..."
+rakudobrew init
+echo "rakudobrew initialized" | indent
+
+echo "-----> Building moar"
+rakudobrew build moar
+echo "moar built" | indent
+
+echo "-----> Building panda"
+rakudobrew build panda
+echo "panda built" | indent

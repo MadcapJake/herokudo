@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# bin/release <build-dir>
+
+cat <<EOF
+---
+default_process_types:
+  web: perl6 app.pl6
+EOF
