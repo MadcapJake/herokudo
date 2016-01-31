@@ -11,20 +11,23 @@ indent() {
 echo "-----> Found a META6.json"
 
 BUILD_DIR=${1:-}
-# CACHE_DIR=${2:-}
+CACHE_DIR=${2:-}
 # ENV_DIR=${3:-}
 # BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
-RAKUDOBREW_BIN=$HOME/.rakudobrew/bin
-SITE_BIN=$HOME/.rakudobrew/moar-nom/install/share/perl6/site/bin
+RAKUDOBREW_BIN=$CACHE_DIR/.rakudobrew/bin
+SITE_BIN=$CACHE_DIR/.rakudobrew/moar-nom/install/share/perl6/site/bin
 
-echo "-----> Cloning rakudobrew repo..."
-git clone https://github.com/tadzik/rakudobrew $HOME/.rakudobrew
-export PATH=$RAKUDOBREW_BIN:$PATH
-echo "cloning completed" | indent
+if [ ! -d $CACHE_DIR/.rakudobrew ]; then
+  echo "-----> Cloning rakudobrew repo..."
+  git clone https://github.com/tadzik/rakudobrew $CACHE_DIR/.rakudobrew
+  echo "cloning completed" | indent
 
-echo "-----> Initializing rakudobrew..."
-rakudobrew init
-echo "rakudobrew initialized" | indent
+  export PATH=$RAKUDOBREW_BIN:$PATH
+
+  echo "-----> Initializing rakudobrew..."
+  rakudobrew init
+  echo "rakudobrew initialized" | indent
+fi
 
 echo "-----> Building moar..."
 rakudobrew build moar
