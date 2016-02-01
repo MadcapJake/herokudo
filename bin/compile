@@ -17,8 +17,13 @@ newstep "Found a META6.json"
 
 VER=2015.12
 
-## Setting up dir
-PERL6_DIR=$HOME/.heroku/perl6
+## Setting up dirs
+BUILD_DIR=${1:-}
+# CACHE_DIR=${2:-}
+# # ENV_DIR=${3:-}
+# # BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
+
+PERL6_DIR=$BUILD_DIR/.heroku/perl6
 mkdir -p $PERL6_DIR
 
 LOG_FILE="/tmp/rakudo-build-log.txt"
@@ -85,7 +90,7 @@ git clone --recursive git://github.com/tadzik/panda.git -q
 substep "Boostrapping Panda..."
 cd panda
 { perl6 bootstrap.pl; } &> $LOG_FILE
-SITE_BIN=$HOME/.heroku/perl6/share/perl6/site/bin
+SITE_BIN=$BUILD_DIR/.heroku/perl6/share/perl6/site/bin
 export PATH=$SITE_BIN:$PATH
 
 substep "Cleaning up..."
@@ -97,13 +102,9 @@ newstep "Installing Task::Star"
 substep "Panda installing modules..."
 { panda install Task::Star; } &> $LOG_FILE
 
-# BUILD_DIR=${1:-}
-# CACHE_DIR=${2:-}
-# # ENV_DIR=${3:-}
-# # BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
 newstep "Creating default config vars"
 
-mkdir -p $HOME/.profile.d
-echo "PATH=$PERL6_BIN:$SITE_BIN:$PATH" > $HOME/.profile.d/perl6.sh
+mkdir -p $BUILD_DIR/.profile.d
+echo "PATH=$PERL6_BIN:$SITE_BIN:$PATH" > $BUILD_DIR/.profile.d/perl6.sh
 
 newstep "Finished!"
