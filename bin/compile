@@ -17,14 +17,17 @@ newstep "Found a META6.json"
 
 VER=2015.12
 
+# Cache old path
+OLD_PATH=$PATH
+
 ## Setting up dirs
 BUILD_DIR=${1:-}
 # CACHE_DIR=${2:-}
 # # ENV_DIR=${3:-}
 # # BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
 
-PERL6_DIR=$BUILD_DIR/.heroku/perl6
-mkdir -p $PERL6_DIR
+BUILD_P6_DIR=$BUILD_DIR/.heroku/perl6
+mkdir -p $BUILD_P6_DIR
 
 LOG_FILE="/tmp/rakudo-build-log.txt"
 : > $LOG_FILE
@@ -36,7 +39,7 @@ curl -0s http://moarvm.org/releases/MoarVM-$VER.tar.gz | tar zxf -
 
 substep "Configuring MoarVM..."
 cd MoarVM-$VER
-{ perl Configure.pl --prefix=$PERL6_DIR; } &> $LOG_FILE
+{ perl Configure.pl --prefix=$BUILD_P6_DIR; } &> $LOG_FILE
 
 substep "Installing MoarVM..."
 make &> $LOG_FILE
@@ -53,7 +56,7 @@ curl -s http://rakudo.org/downloads/nqp/nqp-$VER.tar.gz | tar zxf -
 
 substep "Configuring NQP..."
 cd nqp-$VER
-{ perl Configure.pl --prefix=$PERL6_DIR; } &> $LOG_FILE
+{ perl Configure.pl --prefix=$BUILD_P6_DIR; } &> $LOG_FILE
 
 substep "Installing NQP..."
 make &> $LOG_FILE
@@ -70,13 +73,13 @@ curl -s http://rakudo.org/downloads/rakudo/rakudo-$VER.tar.gz | tar zxf -
 
 substep "Configuring Rakudo..."
 cd rakudo-$VER
-{ perl Configure.pl --backends=moar --prefix=$PERL6_DIR; } &> $LOG_FILE
+{ perl Configure.pl --backends=moar --prefix=$BUILD_P6_DIR; } &> $LOG_FILE
 
 substep "Installing Rakudo..."
 make &> $LOG_FILE
 make install &> $LOG_FILE
-PERL6_BIN=$PERL6_DIR/bin
-export PATH=$PERL6_BIN:$PATH
+BUILD_P6_BIN=$BUILD_P6_DIR/bin
+export PATH=$BUILD_P6_BIN:$PATH
 
 substep "Cleaning up..."
 cd ..
@@ -102,9 +105,13 @@ newstep "Installing Task::Star"
 substep "Panda installing modules..."
 { panda install Task::Star; } &> $LOG_FILE
 
-newstep "Creating default config vars"
+newstep "Creating config vars"
 
 mkdir -p $BUILD_DIR/.profile.d
-echo "PATH=$PERL6_BIN:$SITE_BIN:$PATH" > $BUILD_DIR/.profile.d/perl6.sh
+
+APP_P6_DIR=$HOME/.heroku/perl6
+APP_P6_BIN=$APP_P6_DIR/bin
+APP_SITE_BIN$APP_P6_DIR/share/perl6/site/bin
+echo "PATH=$APP_P6_BIN:$APP_SITE_BIN:$OLD_PATH" > $BUILD_DIR/.profile.d/perl6.sh
 
 newstep "Finished!"
