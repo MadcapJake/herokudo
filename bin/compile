@@ -82,7 +82,7 @@ git clone --recursive git://github.com/tadzik/panda.git -q
 substep "Boostrapping Panda..."
 cd panda
 perl6 bootstrap.pl
-$SITE_BIN=$PERL6_DIR/share/perl6/site/bin
+$SITE_BIN=$HOME/.heroku/perl6/share/perl6/site/bin
 export PATH=$SITE_BIN:$PATH
 
 substep "Cleaning up..."
