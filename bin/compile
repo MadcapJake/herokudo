@@ -102,5 +102,5 @@ substep "Panda installing modules..."
 # # ENV_DIR=${3:-}
 # # BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
 
-mkdir -p $BUILD_DIR/.profile.d
-echo "PATH=$PERL6_BIN:$SITE_BIN:$PATH" > $BUILD_DIR/.profile.d/perl6.sh
+mkdir -p $HOME/.profile.d
+echo "PATH=$PERL6_BIN:$SITE_BIN:$PATH" > $HOME/.profile.d/perl6.sh
