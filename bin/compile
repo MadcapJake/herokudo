@@ -101,6 +101,9 @@ substep "Panda installing modules..."
 # CACHE_DIR=${2:-}
 # # ENV_DIR=${3:-}
 # # BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
+newstep "Creating default config vars"
 
 mkdir -p $HOME/.profile.d
 echo "PATH=$PERL6_BIN:$SITE_BIN:$PATH" > $HOME/.profile.d/perl6.sh
+
+newstep "Finished!"
