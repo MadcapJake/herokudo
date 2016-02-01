@@ -111,7 +111,7 @@ mkdir -p $BUILD_DIR/.profile.d
 
 APP_P6_DIR=$HOME/.heroku/perl6
 APP_P6_BIN=$APP_P6_DIR/bin
-APP_SITE_BIN$APP_P6_DIR/share/perl6/site/bin
+APP_SITE_BIN=$APP_P6_DIR/share/perl6/site/bin
 echo "PATH=$APP_P6_BIN:$APP_SITE_BIN:$OLD_PATH" > $BUILD_DIR/.profile.d/perl6.sh
 
 newstep "Finished!"
