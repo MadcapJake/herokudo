@@ -94,7 +94,7 @@ rm -rf panda
 
 newstep "Installing Task::Star"
 
-substep "Panda installing..."
+substep "Panda installing modules..."
 { panda install Task::Star; } &> $LOG_FILE
 
 # BUILD_DIR=${1:-}
