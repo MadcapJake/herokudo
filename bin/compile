@@ -21,6 +21,9 @@ VER=2015.12
 PERL6_DIR=$HOME/.heroku/perl6
 mkdir -p $PERL6_DIR
 
+LOG_FILE="/tmp/rakudo-build-log.txt"
+: > $LOG_FILE
+
 newstep "Installing MoarVM $VER"
 
 substep "Downlading MoarVM..."
@@ -28,11 +31,11 @@ curl -0s http://moarvm.org/releases/MoarVM-$VER.tar.gz | tar zxf -
 
 substep "Configuring MoarVM..."
 cd MoarVM-$VER
-perl Configure.pl --prefix=$PERL6_DIR
+{ perl Configure.pl --prefix=$PERL6_DIR; } &> $LOG_FILE
 
 substep "Installing MoarVM..."
-make --silent
-make install --silent
+make &> $LOG_FILE
+make install &> $LOG_FILE
 
 substep "Cleaning up..."
 cd ..
@@ -45,11 +48,11 @@ curl -s http://rakudo.org/downloads/nqp/nqp-$VER.tar.gz | tar zxf -
 
 substep "Configuring NQP..."
 cd nqp-$VER
-perl Configure.pl --prefix=$PERL6_DIR
+{ perl Configure.pl --prefix=$PERL6_DIR; } &> $LOG_FILE
 
 substep "Installing NQP..."
-make --silent
-make install --silent
+make &> $LOG_FILE
+make install &> $LOG_FILE
 
 substep "Cleaning up..."
 cd ..
@@ -62,11 +65,11 @@ curl -s http://rakudo.org/downloads/rakudo/rakudo-$VER.tar.gz | tar zxf -
 
 substep "Configuring Rakudo..."
 cd rakudo-$VER
-perl Configure.pl --backends=moar --prefix=$PERL6_DIR
+{ perl Configure.pl --backends=moar --prefix=$PERL6_DIR; } &> $LOG_FILE
 
 substep "Installing Rakudo..."
-make --silent
-make install --silent
+make &> $LOG_FILE
+make install &> $LOG_FILE
 PERL6_BIN=$PERL6_DIR/bin
 export PATH=$PERL6_BIN:$PATH
 
@@ -81,7 +84,7 @@ git clone --recursive git://github.com/tadzik/panda.git -q
 
 substep "Boostrapping Panda..."
 cd panda
-perl6 bootstrap.pl
+{ perl6 bootstrap.pl; } &> $LOG_FILE
 $SITE_BIN=$HOME/.heroku/perl6/share/perl6/site/bin
 export PATH=$SITE_BIN:$PATH
 
@@ -92,7 +95,7 @@ rm -rf panda
 newstep "Installing Task::Star"
 
 substep "Panda installing..."
-panda install Task::Star
+{ panda install Task::Star; } &> $LOG_FILE
 
 # BUILD_DIR=${1:-}
 # CACHE_DIR=${2:-}
