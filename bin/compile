@@ -57,7 +57,7 @@ curl -s http://rakudo.org/downloads/nqp/nqp-$VER.tar.gz | tar zxf -
 
 substep "Configuring NQP..."
 cd nqp-$VER
-{ perl Configure.pl --prefix=$HOME } &> $LOG_FILE
+{ perl Configure.pl --prefix=$HOME; } &> $LOG_FILE
 
 substep "Installing NQP..."
 make DESTDIR=$BUILD_P6_DIR &> $LOG_FILE
