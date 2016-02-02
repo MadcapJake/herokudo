@@ -73,7 +73,7 @@ substep "Downlading Rakudo..."
 curl -s http://rakudo.org/downloads/rakudo/rakudo-$RAKVER.tar.gz | tar zxf -
 
 substep "Configuring Rakudo..."
-cd rakudo-$VER
+cd rakudo-$RACKVER
 { perl Configure.pl --backends=moar --prefix=$HOME; } &> $LOG_FILE
 
 substep "Installing Rakudo..."
@@ -84,7 +84,7 @@ export PATH=$BUILD_P6_BIN:$PATH
 
 substep "Cleaning up..."
 cd ..
-rm -rf rakudo-$VER
+rm -rf rakudo-$RACKVER
 
 newstep "Installing Panda's latest"
 
