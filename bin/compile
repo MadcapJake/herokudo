@@ -15,7 +15,8 @@ substep() {
 }
 newstep "Found a META6.json"
 
-VER=2015.12
+VER=2016.01
+RAKVER=$VER.1
 
 # Cache old path
 OLD_PATH=$PATH
@@ -39,10 +40,10 @@ curl -0s http://moarvm.org/releases/MoarVM-$VER.tar.gz | tar zxf -
 
 substep "Configuring MoarVM..."
 cd MoarVM-$VER
-{ perl Configure.pl --prefix=$BUILD_P6_DIR; } &> $LOG_FILE
+{ perl Configure.pl --prefix=$HOME; } &> $LOG_FILE
 
 substep "Installing MoarVM..."
-make &> $LOG_FILE
+make DESTDIR=$BUILD_P6_DIR &> $LOG_FILE
 make install &> $LOG_FILE
 
 substep "Cleaning up..."
@@ -56,27 +57,27 @@ curl -s http://rakudo.org/downloads/nqp/nqp-$VER.tar.gz | tar zxf -
 
 substep "Configuring NQP..."
 cd nqp-$VER
-{ perl Configure.pl --prefix=$BUILD_P6_DIR; } &> $LOG_FILE
+{ perl Configure.pl --prefix=$HOME } &> $LOG_FILE
 
 substep "Installing NQP..."
-make &> $LOG_FILE
+make DESTDIR=$BUILD_P6_DIR &> $LOG_FILE
 make install &> $LOG_FILE
 
 substep "Cleaning up..."
 cd ..
 rm -rf nqp-$ver
 
-newstep "Installing Rakudo $VER"
+newstep "Installing Rakudo $RAKVER"
 
 substep "Downlading Rakudo..."
-curl -s http://rakudo.org/downloads/rakudo/rakudo-$VER.tar.gz | tar zxf -
+curl -s http://rakudo.org/downloads/rakudo/rakudo-$RAKVER.tar.gz | tar zxf -
 
 substep "Configuring Rakudo..."
 cd rakudo-$VER
-{ perl Configure.pl --backends=moar --prefix=$BUILD_P6_DIR; } &> $LOG_FILE
+{ perl Configure.pl --backends=moar --prefix=$HOME; } &> $LOG_FILE
 
 substep "Installing Rakudo..."
-make &> $LOG_FILE
+make DESTDIR=$BUILD_P6_DIR &> $LOG_FILE
 make install &> $LOG_FILE
 BUILD_P6_BIN=$BUILD_P6_DIR/bin
 export PATH=$BUILD_P6_BIN:$PATH
